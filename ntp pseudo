@@ -1,7 +1,5 @@
-scapy ntp pseudocode
+﻿scapy ntp pseudocode
 
-from scapy.all import *
-import time #may be needed
 
 define ntp packet
 Requirements:
@@ -34,3 +32,37 @@ ntp_pkt = Ether()/IP(dst="time.google.com")/UDP(dport=123)/NTP(orig_timestamp=or
 #crafting the actual packet ^
 print(ntp_pkt.summary())
 #this is used to analyze the packet to make sure it's up to snuff
+
+Here is a bare-bones way to create a packet with python
+
+from scapy.all import *
+import time #may be needed
+
+class NTP(Packet):
+	name = “packet_name”
+	fields_desc = [
+		ByteField(“flags”,0),
+		ByteField(“stratum”,1),
+		ByteField(“poll”,0),
+		ByteField(“precision”,0),
+		IntField(“root_delay”,0),
+		IntField(“root_dispersion”,0),
+		StrFixedLenField(“reference_id”, b””, length=5),
+		IntField(“reference_timetamp”,0),
+		IntField(“origin_timestamp”,0),
+		IntField(“receive_timestamp”,0),
+		IntField(“transmit_timestamp”,0)
+	]
+
+ntp_packet = IP(dst=”ntp_server”)/UDP(sport123, dport123)/NTP()
+
+print(“Packet info before sending:”)
+ntp_packet.show()
+
+response = sr1(ntp_packet, verbose=0)
+
+if response:
+	print(“Response:”)
+	response.show()
+else:
+	print(“no response”)
