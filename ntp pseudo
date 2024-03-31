@@ -1,0 +1,36 @@
+scapy ntp pseudocode
+
+from scapy.all import *
+import time #may be needed
+
+define ntp packet
+Requirements:
+dest IP (ntp server)
+dest port (123 is default)
+NTP fields
+minimum should be mode, version, transmit timestamp
+others that may be required:
+stratum of server (in this case will probably be 1, the highest available)
+root delay/disparity - delay between server and client and maximum error between server and reference clock. Not strictly necessary
+reference ID - source of the reference timestamp. Leave blank
+timestamps (reference from the server, origin, receive, and transmit)
+
+What each of the timestamps mean:
+Reference - Timestamp of the last time the server was set/corrected
+Provided by server, may need to manually get
+Origin - Timestamp at which the packet was sent from the client
+Set by client
+^This is the one we care about
+Receive - Time whent he packet was received by the server
+Set by server
+Transmit - Time when the response packet is received by the server. Set by the server when sending response to client
+
+NTP timestamps are weird, it starts from Jan 1st, 1900, rather than 1973
+
+Scapy handles packet construction and checksums, so thats one less thing we need to deal with. Honestly, this tool seems really cool and easy to use. You just need to find out what is essential when crafting a packet of a sspecific kind. This is where ChatGPT comes in clutch.
+
+
+ntp_pkt = Ether()/IP(dst="time.google.com")/UDP(dport=123)/NTP(orig_timestamp=orig_timestamp)
+#crafting the actual packet ^
+print(ntp_pkt.summary())
+#this is used to analyze the packet to make sure it's up to snuff
