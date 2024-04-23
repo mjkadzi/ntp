@@ -10,6 +10,13 @@ def send_ntp(server_ip, src_ip, ref_timestamp):
     ntp_packet = NTP()
 
     ntp_packet.ref = ref_timestamp
+    ntp_packet.version = 3
+    ntp_packet.refid = "10.10.10.12"
+    ntp_packet.delay = 1
+    ntp_packet.disp = 16
+    ntp_packet.precision = 0.01
+    ntp_packet.poll = 4
+    ntp_packet.mode = 4
 
     ip_packet = IP(src=server_ip, dst=src_ip)
 
