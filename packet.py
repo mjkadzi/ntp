@@ -1,11 +1,12 @@
-from scapy.all import IP, UDP, NTP, send
+from scapy.all import IP, UDP, NTP, send, sniff
+from scapy.layers.ntp import NTP
 import time
 
 server_ip = "10.10.10.12"
 src_ip = "10.10.10.10"
 ref_timestamp = time.time() + 259200
 
-def send_ntp(server_ip, src_ip):
+def send_ntp(server_ip, src_ip, ref_timestamp):
     ntp_packet = NTP()
 
     ntp_packet.ref = ref_timestamp
