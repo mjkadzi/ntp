@@ -13,7 +13,7 @@ def send_ntp(server_ip, src_ip, ref_timestamp):
     ntp_packet.version = 3
     ntp_packet.refid = server_ip
     ntp_packet.delay = 1
-    ntp_packet.disp = 16
+    ntp_packet.dispersion = 16
     ntp_packet.precision = 1
     ntp_packet.poll = 4
     ntp_packet.mode = 4
