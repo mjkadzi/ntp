@@ -8,10 +8,10 @@ ref_timestamp = time.time() + 259200
 def send_ntp(server, packetsrc, ref_timestamp):
     ntp_packet = NTP()
 
-    ntp_packet.leap = 11
+    ntp_packet.leap = 00
     ntp_packet.ref = ref_timestamp
     ntp_packet.version = 3
-    ntp_packet.ref_id = server
+    ntp_packet.ref_id = "LCL"
     ntp_packet.delay = 1
     ntp_packet.dispersion = 16
     ntp_packet.precision = 1
