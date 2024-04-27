@@ -15,10 +15,13 @@ def send_ntp(server, packet):
     #ntp_packet.show()
     print()
 
+    ntp_packet[UDP].dport = 123
+    ntp_packet[UDP].sport = 123
     #ntp_packet[NTP].ref = ntp_packet[NTP].ref + 259201
     ntp_packet[NTP].orig = ntp_packet[NTP].ref + 259201
     ntp_packet[NTP].recv = ntp_packet[NTP].ref + 259201
     ntp_packet[NTP].sent = ntp_packet[NTP].ref + 259201
+    
     ntp_packet[Ether].dst = "4e:c1:60:9c:84:bc"
 
     #ip_packet = IP(src=server, dst=dest_ip)
