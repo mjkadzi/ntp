@@ -29,7 +29,6 @@ def send_ntp(server, packet):
     #    print("new checksum: " + str(ntp_packet[UDP].chksum))
     #else:
     #    print("Packet does not contain UDP layer")
-    ntp_packet = ntp_packet.build()
     send(ntp_packet, verbose=True)
 
 
