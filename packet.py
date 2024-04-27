@@ -12,7 +12,7 @@ def send_ntp(server, packetsrc, ref_timestamp):
     ntp_packet.leap = 00
     ntp_packet.ref = ref_timestamp
     ntp_packet.version = 3
-    ntp_packet.ref_id = "LCL"
+    ntp_packet.ref_id = b"\x00\x00\x00\x00"
     ntp_packet.delay = 1
     ntp_packet.dispersion = 16
     ntp_packet.precision = 1
@@ -35,7 +35,12 @@ def send_ntp(server, packetsrc, ref_timestamp):
     send(ip_packet/udp_packet/ntp_packet, verbose=True)
 
 def ntp_request(packet):
-    if packet.haslayer(NTP) and packet[NTP].mode == 3:
+    ntp_layer = packet.getlayer(NTP)
+    if ntp_layer and ntp_layer.mode == 3:
+        print("Here is the ref_id")
+        print(ntp_layer.ref_id)
+        print("here is the ref_time")
+        print(ntp_layer.ref)
         send_ntp(server_ip, packet[IP].src, ref_timestamp)
 
 if __name__ == "__main__":
