@@ -15,7 +15,7 @@ def send_ntp(server, packet):
     #ntp_packet.show()
     print()
 
-    ntp_packet[NTP].ref = ntp_packet[NTP].ref + 259201
+    #ntp_packet[NTP].ref = ntp_packet[NTP].ref + 259201
     ntp_packet[NTP].orig = ntp_packet[NTP].ref + 259201
     ntp_packet[NTP].recv = ntp_packet[NTP].ref + 259201
     ntp_packet[NTP].sent = ntp_packet[NTP].ref + 259201
