@@ -1,6 +1,6 @@
 from scapy.all import *
 from scapy.layers.ntp import NTP
-import time, datetime, socket, os, array
+import time, datetime, socket, os, array, struct
 
 
 server_ip = "10.10.10.12"
@@ -26,7 +26,7 @@ def send_ntp(server, packet):
         ntp_packet[Ether].dst = "4e:c1:60:9c:84:bc"
 
         #checksum bit
-        ntp_packet[UDP].chksum = checksum(ntp_packet)
+        ntp_packet[UDP].chksum = _checksum_(ntp_packet)
 
 
         #ip_packet = IP(src=server, dst=dest_ip)
@@ -39,7 +39,7 @@ def send_ntp(server, packet):
     except Exception as e:
         print("An error occurred:", e)
 
-def checksum(packet):
+def _checksum_(packet):
     udp_header = bytes(packet[UDP])
     src_ip = socket.inet_aton(packet[IP].src)
     dst_ip = socket.inet_aton(packet[IP].dst)
