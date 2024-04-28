@@ -10,7 +10,7 @@ def send_ntp(server, packet):
     try:
         print('here')
         ntp_packet = packet
-        ntp_packet[UDP].chksum = 0
+        #ntp_packet[UDP].chksum = 0
         print("incoming packet")
         ntp_packet.show()
         print()
