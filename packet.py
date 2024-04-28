@@ -52,7 +52,6 @@ def udp_checksum(packet):
 
 def ip_checksum(packet):
     ip_header = bytes(packet[IP])
-    ip_header[10:12] = b'\x00\x00'  # Clear the existing checksum bytes
     # Convert source and destination IP addresses to binary form
     src_ip = socket.inet_aton(packet[IP].src)
     dst_ip = socket.inet_aton(packet[IP].dst)
