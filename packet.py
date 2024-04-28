@@ -26,9 +26,8 @@ def send_ntp(server, packet):
         ntp_packet[Ether].dst = "4e:c1:60:9c:84:bc"
 
         #checksum bit
-        ntp_packet[UDP].chksum = _checksum_(ntp_packet)
-        ntp_packet[IP].chksum = None
-        del ntp_packet[IP].chksum
+        ntp_packet[UDP].chksum = udp_checksum(ntp_packet)
+        ntp_packet[IP].chksum = ip_checksum (ntp_packet)
 
         #ip_packet = IP(src=server, dst=dest_ip)
         #udp_packet = UDP(dport=123, sport=123)
@@ -40,7 +39,7 @@ def send_ntp(server, packet):
     except Exception as e:
         print("An error occurred:", e)
 
-def _checksum_(packet):
+def udp_checksum(packet):
     udp_header = bytes(packet[UDP])
     src_ip = socket.inet_aton(packet[IP].src)
     dst_ip = socket.inet_aton(packet[IP].dst)
@@ -49,6 +48,25 @@ def _checksum_(packet):
     checksum = (checksum >> 16) + (checksum & 0xFFFF)
     checksum += checksum >> 16
     checksum = ~checksum & 0xFFFF
+    return checksum
+
+def ip_checksum(packet):
+    ip_header = bytes(packet[IP])
+    ip_header[10:12] = b'\x00\x00'  # Clear the existing checksum bytes
+    # Convert source and destination IP addresses to binary form
+    src_ip = socket.inet_aton(packet[IP].src)
+    dst_ip = socket.inet_aton(packet[IP].dst)
+    # Create the pseudo-header for the checksum calculation
+    pseudo_header = struct.pack("!4s4sBBH", src_ip, dst_ip, 0, socket.IPPROTO_UDP, len(ip_header))
+    # Calculate the checksum
+    checksum = sum(array.array('H', pseudo_header)) + sum(array.array('H', ip_header))
+    checksum = (checksum >> 16) + (checksum & 0xFFFF)
+    checksum += checksum >> 16
+    checksum = ~checksum & 0xFFFF
+
+    if checksum == 0:
+        checksum = 0xFFFF
+    
     return checksum
 
 def ntp_request(packet):
