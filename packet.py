@@ -26,8 +26,8 @@ def send_ntp(server, packet):
         ntp_packet[Ether].dst = "4e:c1:60:9c:84:bc"
 
         #checksum bit
-        ntp_packet[UDP].chksum = udp_checksum(ntp_packet)
-        ntp_packet[IP].chksum = ip_checksum (ntp_packet)
+        #ntp_packet[UDP].chksum = udp_checksum(ntp_packet)
+        #ntp_packet[IP].chksum = ip_checksum (ntp_packet)
 
         #ip_packet = IP(src=server, dst=dest_ip)
         #udp_packet = UDP(dport=123, sport=123)
