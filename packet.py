@@ -9,7 +9,7 @@ victim_ip = "10.10.10.10"
 def send_ntp(server, packet):
     try:
         print('send_ntp runs')
-        ntp_packet = packet
+        ntp_packet = packet.copy()
         #ntp_packet[UDP].chksum = 0
         print("incoming packet")
         ntp_packet.show()
