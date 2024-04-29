@@ -31,6 +31,9 @@ def send_ntp(server, packet):
         del ntp_packet[IP].chksum
         ntp_packet[UDP].chksum = 0  # Recalculate UDP checksum
         ntp_packet[IP].chksum = 0   # Recalculate IP checksum
+
+        del ntp_packet[Ether].fcs
+        ntp_packet[Ether].fcs = 0
         
         #ntp_packet[UDP].chksum = udp_checksum(ntp_packet)
         #ntp_packet[IP].chksum = ip_checksum (ntp_packet)
